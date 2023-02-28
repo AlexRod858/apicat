@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Gato from './components/gato';
+import Button from './components/boton';
+
 
 function App() {
+  const [refresh, setRefresh] = useState(false);
+  const [catImages, setCatImages] = useState([]);
+  const [empty, setEmpty] = useState(false);
+
+//////////////////
+  function handleRefresh() {
+    setRefresh(!refresh);
+  }
+  //////////////
+  function handleImageLoaded(imageUrl) {
+    setCatImages(catImages.concat(imageUrl));
+  }
+//////////////
+  function handleEmptyClick() {
+    setEmpty(true);
+    setCatImages([]);
+  }
+///////////////
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Button onClick={handleRefresh} text="Añadir gato"  />
+      <Button onClick={handleEmptyClick} text="Vaciar manada" />
+      <Gato onImageLoaded={handleImageLoaded} key={refresh} />
+
+      <div className="container">
+      <div className="row">
+        {catImages.map(imageUrl => (
+          <div className="col-sm-4">
+            <img key={imageUrl} src={imageUrl} alt="Gato" className="img-fluid" />
+          </div>
+        ))}
+      </div>
+    </div>
     </div>
   );
 }
 
 export default App;
+
+
